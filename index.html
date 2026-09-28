@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#121613" />
+    <meta
+      name="description"
+      content="HAVOC — a real-time multiplayer kart combat arena. Fast karts, heavy weapons, beautiful destruction."
+    />
+    <title>HAVOC — Karts. Chaos. Repeat.</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23c4f564'/%3E%3Ctext x='13' y='49' font-size='49' font-weight='900' font-style='italic' font-family='Arial' fill='%23121613'%3EH%3C/text%3E%3C/svg%3E"
+    />
+  </head>
+  <body>
+    <canvas id="game" aria-label="Live 3D kart arena"></canvas>
+    <div id="loading">
+      <span class="brand">HAVOC<span class="brand-dot">/</span></span>
+      <p>WARMING UP THE ENGINE…</p>
+      <div class="load-track"></div>
+    </div>
+    <main id="lobby">
+      <div class="shade"></div>
+      <header>
+        <a class="logo" href="/" aria-label="HAVOC home"
+          ><span class="brand">HAVOC<span class="brand-dot">/</span></span
+          ><small>KARTS. CHAOS. REPEAT.</small></a
+        >
+        <nav aria-label="Main navigation">
+          <button class="nav-button active" id="play-nav">PLAY</button
+          ><button class="nav-button" id="garage-nav">GARAGE</button
+          ><button class="nav-button" id="help-nav">HOW TO PLAY</button>
+        </nav>
+        <div class="header-right">
+          <button
+            class="icon-button"
+            id="sound-button"
+            aria-label="Enable sound"
+            data-icon="volume"
+          ></button
+          ><button
+            class="icon-button"
+            id="settings-button"
+            aria-label="Settings"
+            data-icon="settings"
+          ></button>
+          <div class="profile">
+            <span class="avatar" data-icon="helmet"></span>
+            <div>
+              <strong id="profile-name">GUEST RACER</strong
+              ><small>READY TO ROLL</small>
+            </div>
+          </div>
+        </div>
+      </header>
+      <section class="play-panel" aria-label="Play HAVOC">
+        <h1>ALL GAS.<br /><span>NO MERCY.</span></h1>
+        <p class="tagline">Fast karts. Heavy weapons. Beautiful destruction.</p>
+        <form id="play-form">
+          <label for="driver-name">DRIVER NAME</label>
+          <div class="name-field">
+            <input
+              id="driver-name"
+              maxlength="16"
+              value="Racer"
+              autocomplete="nickname"
+              required
+            /><span data-icon="edit"></span>
+          </div>
+          <button class="primary" id="quick-play" type="submit">
+            <span>QUICK PLAY</span><span data-icon="arrow"></span>
+          </button>
+        </form>
+        <div class="room-actions">
+          <button id="create-room">
+            CREATE ROOM <span data-icon="plus"></span></button
+          ><button id="join-room">
+            JOIN ROOM <span data-icon="users"></span>
+          </button>
+        </div>
+        <p class="match-note">
+          <span class="status-dot"></span>Up to 8 players <span>·</span> Bots
+          fill empty seats
+        </p>
+      </section>
+      <div class="kart-caption">
+        <div><em>01</em><span>/</span><strong>THE RENEGADE</strong></div>
+        <button id="rotate-preview" aria-label="Rotate the live kart preview">
+          <span data-icon="rotate"></span>360° LIVE PREVIEW
+        </button>
+      </div>
+      <section class="arena-picker" aria-label="Choose your arena">
+        <div class="arena-heading">
+          <span>CHOOSE YOUR ARENA</span
+          ><span>3 WORLDS. ZERO SPEED LIMITS.</span>
+        </div>
+        <div class="arena-grid">
+          <button
+            class="arena-card selected"
+            data-map="canyon"
+            aria-pressed="true"
+          >
+            <span class="arena-art canyon"></span
+            ><span class="selected-check" data-icon="check"></span
+            ><span class="arena-copy"
+              ><strong>SUNSET CANYON</strong
+              ><small
+                ><span data-icon="sun"></span>GOLDEN HOUR <i>·</i> DRY
+                TERRAIN</small
+              ></span
+            ><span class="arena-index">01</span>
+          </button>
+          <button class="arena-card" data-map="alpine" aria-pressed="false">
+            <span class="arena-art alpine"></span
+            ><span class="selected-check" data-icon="check"></span
+            ><span class="arena-copy"
+              ><strong>FROSTBITE RIDGE</strong
+              ><small
+                ><span data-icon="snow"></span>SNOWFALL <i>·</i> LOW GRIP</small
+              ></span
+            ><span class="arena-index">02</span>
+          </button>
+          <button class="arena-card" data-map="harbor" aria-pressed="false">
+            <span class="arena-art harbor"></span
+            ><span class="selected-check" data-icon="check"></span
+            ><span class="arena-copy"
+              ><strong>NEON DOCKS</strong
+              ><small
+                ><span data-icon="moon"></span>MIDNIGHT <i>·</i> WET
+                ASPHALT</small
+              ></span
+            ><span class="arena-index">03</span>
+          </button>
+        </div>
+      </section>
+      <footer>
+        <div class="control-hints">
+          <span><kbd>WASD</kbd> DRIVE</span><span><kbd>SPACE</kbd> FIRE</span
+          ><span><kbd>SHIFT</kbd> DRIFT</span><span><kbd>E</kbd> BOOST</span>
+        </div>
+        <span class="footer-note"
+          >BUILT FOR THE BROWSER<span class="status-dot"></span
+        ></span>
+      </footer>
+    </main>
+    <section id="hud" hidden aria-label="Game HUD">
+      <div class="hud-top">
+        <div class="match-info">
+          <span class="brand">HAVOC<span class="brand-dot">/</span></span
+          ><strong id="match-map">SUNSET CANYON</strong
+          ><small
+            >FREE FOR ALL <span>·</span>
+            <span id="player-count">6 RACERS</span></small
+          >
+        </div>
+        <div class="timer">
+          <small id="round-label">ROUND 01</small
+          ><strong id="time-left">3:00</strong
+          ><span>MOST ELIMINATIONS WINS</span>
+        </div>
+        <div class="match-tools">
+          <button
+            id="invite-button"
+            class="room-code"
+            title="Copy an invite link"
+          >
+            <span data-icon="users"></span><span id="room-code">ROOM</span
+            ><span data-icon="copy"></span></button
+          ><button
+            class="icon-button"
+            id="pause-button"
+            aria-label="Pause menu"
+            data-icon="pause"
+          ></button
+          ><small id="latency">CONNECTING</small>
+        </div>
+      </div>
+      <div id="leaderboard"></div>
+      <div id="kill-feed" aria-live="polite"></div>
+      <div id="nameplates"></div>
+      <div id="crosshair"></div><div id="combat-feedback" role="status"></div><div id="countdown" hidden><small>GET READY</small><strong id="countdown-number">3</strong></div>
+      <div id="hit-flash"></div>
+      <div id="respawn" hidden>
+        <strong>WRECKED.</strong><span>BACK IN <b id="respawn-time">3</b></span>
+      </div>
+      <div class="hud-bottom">
+        <div class="vitals">
+          <div class="health-label">
+            <span>ARMOR</span><strong id="health-number">100</strong>
+          </div>
+          <div class="health-track"><div id="health-bar"></div></div>
+          <div id="drift-meter"><span id="drift-label">HOLD SHIFT + TURN TO DRIFT</span><div><div id="drift-fill"></div></div></div><div class="boost-line">
+            <kbd>E</kbd><span>BOOST</span>
+            <div class="boost-track"><div id="boost-bar"></div></div>
+          </div>
+        </div>
+        <div class="weapon-slot">
+          <span id="weapon-icon" data-icon="box"></span>
+          <div>
+            <small id="weapon-hint">DRIVE THROUGH A PICKUP</small
+            ><strong id="weapon-name">FIND YOUR FIREPOWER</strong>
+          </div>
+          <kbd>SPACE</kbd><span id="ammo"></span>
+        </div>
+        <div class="speedometer">
+          <strong id="speed">0</strong><span>KM/H</span
+          ><canvas
+            id="minimap"
+            width="140"
+            height="140"
+            aria-label="Arena minimap"
+          ></canvas>
+        </div>
+      </div>
+      <div id="touch-controls">
+        <div class="touch-steer">
+          <button data-control="left" aria-label="Steer left">◀</button
+          ><button data-control="right" aria-label="Steer right">▶</button>
+        </div>
+        <div class="touch-actions">
+          <button data-control="drift">DRIFT</button
+          ><button data-control="boost">BOOST</button
+          ><button data-control="fire" class="touch-fire">FIRE</button
+          ><button data-control="forward">GAS</button
+          ><button data-control="reverse">REV</button>
+        </div>
+      </div>
+    </section>
+    <dialog id="modal">
+      <button
+        class="modal-close icon-button"
+        id="close-modal"
+        aria-label="Close dialog"
+        data-icon="close"
+      ></button>
+      <div id="modal-content"></div>
+    </dialog>
+    <div id="toast" role="status"></div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
